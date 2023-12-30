@@ -27,11 +27,11 @@ exports.getCryptoCurrencies = async() => {
     }
   };
 
-  exports.getCryptoConverterAmount = async() => {
+  exports.getCryptoConverterAmount = async(reqBody) => {
     let response = null;
-    const cryptoSymbol = 'BTC';
-    const fiatCurrency = 'USD';
-    const customAmount = 100; 
+    const cryptoSymbol = reqBody.cryptoSymbol;
+    const fiatCurrency = reqBody.fiatCurrency;
+    const amount = reqBody.amount; 
     try {
         const apiUrl = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest`;
         const response = await axios.get(apiUrl, {
@@ -46,10 +46,9 @@ exports.getCryptoCurrencies = async() => {
                 const responseData = data.data.find( item => item.symbol ===  cryptoSymbol);
                 const quote = responseData.quote[fiatCurrency];
                 const price = quote.price;
-                const equivalentAmount = customAmount * price;
-                const result = `${customAmount} ${cryptoSymbol} = ${equivalentAmount} ${fiatCurrency}`;
+                const equivalentAmount = amount * price;
                 console.log(`1 ${cryptoSymbol} = ${price} ${fiatCurrency}`);
-                return result;
+                return equivalentAmount;
               } else {
                 console.error('Error fetching exchange rate:', data.status.error_message);
               }

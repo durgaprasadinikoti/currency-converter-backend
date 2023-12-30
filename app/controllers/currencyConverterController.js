@@ -10,7 +10,7 @@ exports.getCryptoCurrencies = async (req, res) => {
 };
 
 exports.getCryptoConverterAmount = async (req, res) => {
-    const response = await currencyConverterService.getCryptoConverterAmount();
+    const response = await currencyConverterService.getCryptoConverterAmount(req.body);
     if(response) {
       res.json(response);
     } else {
